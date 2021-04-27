@@ -18,12 +18,14 @@ var requiredJS = [
 ];
 
 loadJS(requiredJS);
+
+var returnURL = '{{Request::path()}}';
 </script>
 
 <!-- FEATURED DATATABLE -->
 <div class="panel">
   <div class="panel-heading">
-    <h3 class="panel-title">Featured Datatable</h3>
+    <h3 class="panel-title">Members List</h3>
   </div>
   <div class="panel-body">
     <p class="text-right"><a href="members/create" class="btn btn-primary view-links">Create Member</a></p>
@@ -48,7 +50,8 @@ loadJS(requiredJS);
         <tr>
           <td>{{$member->id}}</td>
           <td><img src="images/{{$member->image ?? 'default_avatar.png'}}" alt="Avatar" class="avatar"></td>
-          <td> {{$member->lastname}}, {{$member->firstname}} {{$member->middlename}} </td>
+          <td><a href="members/{{$member->id}}" class="view-links" title="View">{{$member->lastname}},
+              {{$member->firstname}} {{$member->middlename}}</a></td>
           <td>{{$member->gender}}</td>
           <td>{{$member->contact}}</td>
           <td>{{$member->email}}</td>
@@ -57,9 +60,10 @@ loadJS(requiredJS);
           <td>{{$member->date_started}}</td>
           <td>{{$member->date_restarted}}</td>
           <td>
-            <a href="members/{{$member->id}}" class="btn btn-default view-links">View</a>
-            <a href="members/{{$member->id}}/edit" class="btn btn-primary view-links">Edit</a>
-            <button type="button" class="btn btn-danger" onClick="deleteMember({{$member->id}})">Archive</button>
+            <a href="members/{{$member->id}}" class="view-links" title="View"><i class="fa fa-eye"></i></a>
+            <a href="members/{{$member->id}}/edit" class="view-links" title="Edit"><i class="fa fa-pencil"></i></a>
+            <a href="#" class="text-danger" onClick="deleteMember({{$member->id}})" title="Archive"><i
+                class="fa fa-trash"></i></a>
           </td>
         </tr>
         @endforeach

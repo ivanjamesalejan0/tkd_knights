@@ -140,6 +140,7 @@ function getMenuObj(arrMenu, url) {
 }
 
 function loadView(viewUrl) {
+  $('.swal2-shown').removeClass('swal2-shown');
 	$.ajax({
 		type: 'GET',
 		url: $.viewsDirectory + viewUrl,

@@ -15,6 +15,8 @@ $(function () {
   $('#camera-modal').on('hidden.bs.modal', function () {
     Webcam.reset('#my_camera');
   });
+  
+	$('#select-referrer').select2();
 
   $('#app-form').on('submit', function (e) {
     return false;

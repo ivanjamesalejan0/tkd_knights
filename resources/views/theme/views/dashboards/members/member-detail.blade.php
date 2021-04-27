@@ -14,6 +14,8 @@ var requiredJS = [
 ];
 
 loadJS(requiredJS);
+
+var returnURL = '{{Request::path()}}';
 </script>
 
 <div class="row">
@@ -28,7 +30,9 @@ loadJS(requiredJS);
                   style="height: 150px; width: auto;">
               </div>
               <div class="media-body">
-                <h2 class="project-title">{{$member->lastname}}, {{$member->firstname}} {{$member->middlename}}</h2>
+                <h2 class="project-title">{{$member->lastname}}, {{$member->firstname}} {{$member->middlename}} <a
+                    href="members/{{$member->id}}/edit" class="view-links" title="Edit"><i class="fa fa-pencil"></i></a>
+                </h2>
                 <span
                   class="label {{ $member->membership_status=='active' ? 'label-success':'label-danger'}} status">{{$member->membership_status}}</span>
                 <div class="project-info">
@@ -95,7 +99,13 @@ loadJS(requiredJS);
             <strong>Citizenship</strong>: {{$member->citizenship}} <br />
             <strong>ID Presented</strong>: {{$member->id_type}} <br />
             <strong>ID Number</strong>: {{$member->id_number}} <br />
-            <strong>Referrer</strong>: {{$member->referrer}} <br />
+            <strong>Referrer</strong>:
+            @if($member->referrer)
+            <a href="members/{{$member->referrer}}" class="view-links" title="View">{{$member->referrer_name}}</a>
+            @else
+            none
+            @endif
+            <br />
           </p>
         </div>
         <div class="project-info">
@@ -131,8 +141,15 @@ loadJS(requiredJS);
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a href="#collapse1" data-toggle="collapse" data-parent="#accordion">
-                    <span class="milestone-title"><i class="fa fa-check icon-indicator text-success"></i> Active
-                      <i class="fa fa-minus-circle toggle-icon"></i>
+                    <span
+                      class="milestone-title {{$member->membership_status=='active' ? 'text-success':'text-danger'}}">
+                      @if($member->membership_status=='active')
+                      <i class="fa fa-check icon-indicator "></i> Active
+                      @else
+                      <i class="fa fa-times icon-indicator "></i> Inactive
+                      @endif
+                    </span>
+                    <i class="fa fa-minus-circle toggle-icon"></i>
                   </a>
                 </h4>
               </div>
@@ -170,15 +187,17 @@ loadJS(requiredJS);
                   </div>
                 </div>
                 <div class="panel-footer">
+                  @if($member->membership_status=='active')
                   <button class="btn btn-success" onClick="attendanceUpdate({{$member->id}})"><i
                       class="fa fa-check"></i> Toggle Update Attendance</button>
+                  @endif
                 </div>
               </div>
             </div>
             <!-- end project milestone -->
 
             <!-- project milestone -->
-          
-    <!-- end project statistic -->
-  </div>
-</div>
+
+            <!-- end project statistic -->
+          </div>
+        </div>
