@@ -368,7 +368,7 @@ var returnURL = '{{Request::path()}}';
                   <select id="select-referrer" name="referrer" class="form-control">
                     <option value="">NONE</option>
                     @foreach($members as $m)
-                    @if(isset($member) && $member->id!=$m->id)
+                    @if((isset($member) && $member->id!=$m->id)||!isset($member))
                     <option value="{{$m->id}}" {{isset($member) && $member->referrer==$m->id? 'selected': ''}}>
                       {{$m->lastname}}, {{$m->firstname}} {{$m->middlename}}
                     </option>
