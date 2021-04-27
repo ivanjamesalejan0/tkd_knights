@@ -1,19 +1,22 @@
 <script>
 requiredCSS = [
+  'assets/vendor/select2/css/select2.min.css',
   'assets/vendor/sweetalert2/sweetalert2.css',
 ];
 
 loadCSS(requiredCSS);
 
 requiredJS = [
+  'assets/vendor/select2/js/select2.min.js',
   'assets/vendor/sweetalert2/sweetalert2.js',
   'js/jquery.form-validator.min.js',
   'js/webcam.min.js',
   'assets/scripts/members/member-form.setup.js'
 ];
 
-
 loadJS(requiredJS);
+
+var returnURL = '{{Request::path()}}';
 </script>
 
 <div class="row">
@@ -355,6 +358,23 @@ loadJS(requiredJS);
                 <div class="form-group form-control-container">
                   <label class="control-label">Date Started</label>
                   <input type="date" name="date_started" class="form-control" value="{{$member->date_started ?? ''}}">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 col-lg-4">
+                <div class="form-group form-control-container">
+                  <label class="control-label">Referrer</label>
+                  <select id="select-referrer" name="referrer" class="form-control">
+                    <option value="">NONE</option>
+                    @foreach($members as $m)
+                    @if(isset($member) && $member->id!=$m->id)
+                    <option value="{{$m->id}}" {{isset($member) && $member->referrer==$m->id? 'selected': ''}}>
+                      {{$m->lastname}}, {{$m->firstname}} {{$m->middlename}}
+                    </option>
+                    @endif
+                    @endforeach
+                  </select>
                 </div>
               </div>
             </div>

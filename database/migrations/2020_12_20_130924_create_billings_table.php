@@ -23,8 +23,8 @@ class CreateBillingsTable extends Migration
             $table->float('amount', 8, 2);
             $table->float('balance', 8, 2);
             $table->string('payment_token', 500);
-            $table->longText('payment_error');
-            $table->longText('note');
+            $table->longText('payment_error')->nullable();
+            $table->longText('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

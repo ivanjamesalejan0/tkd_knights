@@ -21,6 +21,8 @@ function attendanceUpdate(id){
         html: "Attendance has been updated",
         type: 'success',
         allowOutsideClick: false
+      }).then(function (){
+        loadView(returnURL);
       }).catch(swal.noop);
     }else{
       swal({

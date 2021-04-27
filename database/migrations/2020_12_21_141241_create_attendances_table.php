@@ -18,8 +18,8 @@ class CreateAttendancesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('member_id');
             $table->dateTime('time_in');
-            $table->dateTime('time_out');
-            $table->longText('note');
+            $table->dateTime('time_out')->nullable();
+            $table->longText('note')->nullable();
             $table->timestamps();
         });
 

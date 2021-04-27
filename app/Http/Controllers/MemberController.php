@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
-use DB;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -36,7 +35,7 @@ class MemberController extends Controller
             'emergency_contact' => 'required|max:50',
             'emergency_relationship' => 'required|max:50',
             'date_started' => 'required|date',
-            'referrer' => 'null',
+            'referrer' => 'nullable',
             'date_restarted' => 'nullable',
             'image' => 'nullable',
         ];
@@ -61,7 +60,9 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('theme.views.dashboards.members.member-form');
+
+        $members = Member::all();
+        return view('theme.views.dashboards.members.member-form', ['members' => $members]);
     }
 
     /**
@@ -152,6 +153,12 @@ class MemberController extends Controller
         $member_info['home_address'] = $home_address;
         $member_info['billing_address'] = $billing_address;
 
+        if ($member->referrer)
+        {
+            $ref = Member::find($member->referrer);
+            $member_info['referrer_name'] = "$ref->lastname, $ref->firstname $ref->middlename";
+        }
+
         return view('theme.views.dashboards.members.member-detail', ['member' => $member_info]);
     }
 
@@ -169,7 +176,9 @@ class MemberController extends Controller
         $member_info['home_address'] = $home_address;
         $member_info['billing_address'] = $billing_address;
 
-        return view('theme.views.dashboards.members.member-form', ['member' => $member_info]);
+        $members = Member::all();
+
+        return view('theme.views.dashboards.members.member-form', ['member' => $member_info, 'members' => $members]);
     }
 
     /**
@@ -298,7 +307,7 @@ class MemberController extends Controller
     public function attendanceUpdate($id)
     {
         $member = Member::find($id);
-        $attendance = $member->attendance()->whereDate('created_at', DB::raw('CURDATE()'))->orderBy('created_at', 'desc')->first();
+        $attendance = $member->attendance()->whereDate('created_at', date('Y-m-d', strtotime('now')))->orderBy('created_at', 'desc')->first();
         if ($attendance && !$attendance->time_out)
         {
             $attendance->time_out = date('Y-m-d H:i:s', strtotime('now'));
@@ -311,7 +320,7 @@ class MemberController extends Controller
 
         if ($attendance)
         {
-            return ['success' => true, 'message' => 'Success!', 'data' => (array) $attendance];
+            return ['success' => true, 'message' => 'Success!', 'data' => (array) $attendance->toArray()];
         }
         else
         {
