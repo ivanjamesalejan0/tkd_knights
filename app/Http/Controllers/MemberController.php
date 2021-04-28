@@ -36,7 +36,7 @@ class MemberController extends Controller
             'emergency_contact' => 'required|max:50',
             'emergency_relationship' => 'required|max:50',
             'date_started' => 'required|date',
-            'referrer' => 'nullable',
+            'referrer' => 'null',
             'date_restarted' => 'nullable',
             'image' => 'nullable',
         ];

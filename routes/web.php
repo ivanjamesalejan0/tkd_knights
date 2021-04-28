@@ -24,3 +24,6 @@ Route::resource('members', MemberController::class);
 
 Route::post('members/upload-image', 'MemberController@uploadImage');
 Route::post('members/{id}/attendance/update', 'MemberController@attendanceUpdate');
+
+
+Route::get('/add', 'Controller@addUser');
